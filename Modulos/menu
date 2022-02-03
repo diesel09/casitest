@@ -23,6 +23,8 @@ SCPusr="${SCPdir}/controlador"
 SCPfrm="${SCPdir}/herramientas" 
 SCPinst="${SCPdir}/protocolos" 
 SCPidioma="${SCPdir}/idioma"
+casitafree="aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2RpZXNlbDA5L2Nhc2l0ZXN0L21haW4vTW9kdWxvcw=="
+FREE='base64 -d'
 #PROCESSADOR
 _core=$(printf '%-1s' "$(grep -c cpu[0-9] /proc/stat)")
 _usop=$(top -bn1 | sed -rn '3s/[^0-9]* ([0-9\.]+) .*/\1/p;4s/.*, ([0-9]+) .*/\1/p' | tr '\n' ' ')
