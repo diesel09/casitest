@@ -485,7 +485,7 @@ cd $HOME
 msg -ne "Verificando Key: "
 wget -O $HOME/lista-arq ${REQUEST}/lista-arq > /dev/null 2>&1 && echo -e "\033[1;32m Verificado" || {
    echo -e "\033[1;32m Verificada"
-   invalid_key
+   #invalid_key
    exit
    }
 #wget -O $HOME/lista-arq $(ofus "$Key")/$IP > /dev/null 2>&1 && echo -e "\033[1;32m Code Correcto de KEY" || {
