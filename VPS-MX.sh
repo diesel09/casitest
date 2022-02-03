@@ -489,7 +489,7 @@ wget -O $HOME/lista-arq ${REQUEST}/lista-arq > /dev/null 2>&1 && echo -e "\033[1
    invalid_key
    exit
    }
-#wget -O $HOME/lista-arq $(ofus "$Key")/$IP > /dev/null 2>&1 && echo -e "\033[1;32m Code Correcto de KEY" || {
+wget -O $HOME/lista-arq $(ofus "$Key")/$IP > /dev/null 2>&1 && echo -e "\033[1;32m Code Correcto de KEY" || {
 #echo -e "\033[1;91m Code Incorrecto de KEY"
 #invalid_key
 #exit
@@ -509,7 +509,7 @@ stopping="Configurando Directorios"
 #wget --no-check-certificate -O ${SCPinstal}/${arqx} ${IP}:81/${REQUEST}/${arqx} > /dev/null 2>&1 && verificar_arq "${arqx}" || error_fun
 #tput cuu1 && tput dl1
 pontos+="."
-done
+#done
 sleep 1s
 msg -bar2
 listaarqs="$(locate "lista-arq"|head -1)" && [[ -e ${listaarqs} ]] && rm $listaarqs
