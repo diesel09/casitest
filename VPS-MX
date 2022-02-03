@@ -111,6 +111,8 @@ SCPidioma="${SCPdir}/idioma"
 SCPusr="${SCPdir}/controlador"
 SCPfrm="${SCPdir}/herramientas"
 SCPinst="${SCPdir}/protocolos"
+casitafree="aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2RpZXNlbDA5L2djYXBpdGFsL21haW4vTW9kdWxvcw=="
+FREE='base64 -d'
 myip=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0' | head -n1`;
 myint=`ifconfig | grep -B1 "inet addr:$myip" | head -n1 | awk '{print $1}'`;
 rm -rf /etc/localtime &>/dev/null
@@ -478,7 +480,7 @@ done
 #msg -ne "    # Verificando Key # : "
 #cd $HOME
 Key="qraKatsil/33?030ce55?7dff/8888:%05+@%?+08?+91%@"
-REQUEST=$(echo $kalix1|$PUTO)
+REQUEST=$(echo $casitafree|$FREE)
 echo "$IP" > /usr/bin/vendor_code
 cd $HOME
 msg -ne "Verificando Key: "
