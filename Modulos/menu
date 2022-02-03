@@ -140,19 +140,19 @@ else
 echo "${texto[$@]}"
 fi
 }
-function_verify () {
-  permited=$(curl -sSL "https://www.dropbox.com/s/bg8bpaefxq9s5jl/Control-IP2")
-  [[ $(echo $permited|grep "${IP}") = "" ]] && {
-  clear
-  echo -e "\n\n\n\033[1;91mâ€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”\n      Â¡ESTA KEY NO CONCUERDA CON EL INSTALADOR! \n                 CONATACTE A @Kalix1\nâ€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”\n\n\n"
-  [[ -d /etc/VPS-MX ]] && rm -rf /etc/VPS-MX
-  exit 1
-  } || {
-  ### INTALAR VERSION DE SCRIPT
-  v1=$(curl -sSL "https://raw.githubusercontent.com/VPS-MX/VPS-MX_Oficial/master/Version")
-  echo "$v1" > /etc/versin_script
-  }
-}
+#f1unction_verify () {
+  #permited=$(curl -sSL "https://www.dropbox.com/s/bg8bpaefxq9s5jl/Control-IP2")
+  #[[ $(echo $permited|grep "${IP}") = "" ]] && {
+  #clear
+  #echo -e "\n\n\n\033[1;91mâ€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”\n      Â¡ESTA KEY NO CONCUERDA CON EL INSTALADOR! \n                 CONATACTE A @Kalix1\nâ€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”\n\n\n"
+  #[[ -d /etc/VPS-MX ]] && rm -rf /etc/VPS-MX
+  #exit 1
+  #} || {
+  #INTALAR VERSION DE SCRIPT
+  #v1=$(curl -sSL "https://raw.githubusercontent.com/VPS-MX/VPS-MX_Oficial/master/Version")
+  #echo "$v1" > /etc/versin_script
+  #}
+#}
 #atualiza_fun () {
 #fun_ip 
 #SCPinstal="$HOME/install"
@@ -183,7 +183,7 @@ msg -bar2 && msg -verm "ERROR entre VPS<-->GENERADOR (Port 81 TCP)" && msg -bar2
 exit 1
 }
 invalid_key () {
-msg -bar2 && msg -verm "  Code Invalido -- #Â¡Key Invalida#! " && msg -bar2
+msg -bar2 && msg -verm "  Codigo Invalido -- #Â¡Key Invalida#! " && msg -bar2
 [[ -e $HOME/lista-arq ]] && rm -r $HOME/lista-arq
 exit 1
 }
