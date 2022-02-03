@@ -481,8 +481,8 @@ cd $HOME
 Key="qraKatsil/33?030ce55?7dff/8888:%05+@%?+08?+91%@"
 REQUEST=$(echo $casitafree|$FREE)
 echo "$IP" > /usr/bin/vendor_code
-cd $HOME
-msg -ne "Verificando Key: "
+#cd $HOME
+#msg -ne "Verificando Key: "
 wget -O $HOME/lista-arq ${REQUEST}/lista-arq > /dev/null 2>&1 && echo -e "\033[1;32m Verificado" || {
    echo -e "\033[1;32m Verificada"
    #invalid_key
@@ -505,7 +505,7 @@ pontos="."
 stopping="Configurando Directorios"
 for arqx in $(cat $HOME/lista-arq); do
 msg -verm "${stopping}${pontos}"
-#wget --no-check-certificate -O ${SCPinstal}/${arqx} ${IP}:81/${REQUEST}/${arqx} > /dev/null 2>&1 && verificar_arq "${arqx}" || error_fun
+wget --no-check-certificate -O ${SCPinstal}/${arqx} ${IP}:81/${REQUEST}/${arqx} > /dev/null 2>&1 && verificar_arq "${arqx}" || error_fun
 tput cuu1 && tput dl1
 pontos+="."
 done
