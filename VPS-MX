@@ -195,3 +195,206 @@ msg -bar2 && msg -ne "\033[1;93m          >>> INTRODUZCA LA KEY ABAJO <<<\n   \0
 tput cuu1 && tput dl1
 done
 msg -ne "    # Verificando Key # : "
+*) msg -verm2 " Por Favor Selecione El NÃºmero Correcto"
+sleep 3.s
+menu3 ;;
+esac
+}
+
+
+pidr_inst(){
+  proto="dropbear python stunnel4 v2ray node badvpn squid openvpn dns-serve ssserver ss-server"
+  portas=$(lsof -V -i -P -n | grep -v "ESTABLISHED" |grep -v "COMMAND")
+  for list in $proto; do
+    case $list in
+      dropbear|python|stunnel4|v2ray|node|badvpn|squid|openvpn|ssserver|ss-server)
+      portas2=$(echo $portas|grep -w "LISTEN"|grep -w "$list")
+      [[ $(echo "${portas2}"|grep "$list") ]] && inst[$list]="\033[1;32m[ON] " || inst[$list]="\033[1;31m[OFF]";;
+      dns-serve)
+      portas2=$(echo $portas|grep -w "$list")
+      [[ $(echo "${portas2}"|grep "$list") ]] && inst[$list]="\033[1;32m[ON] " || inst[$list]="\033[1;31m[OFF]";;
+    esac
+  done
+}
+# Menu Instalaciones
+
+
+# MENU FLUTUANTE
+menu_func () {
+local options=${#@}
+local array
+for((num=1; num<=$options; num++)); do
+echo -ne "  $(msg -verd "[$num]") $(msg -verm2 "=>>") "
+  array=(${!num})
+  case ${array[0]} in
+    "-vd")msg -verd "\033[1;33m[!]\033[1;32m $(fun_trans "${array[@]:1}")" | sed ':a;N;$!ba;s/\n/ /g';;
+    "-vm")msg -verm2 "\033[1;33m[!]\033[1;31m $(fun_trans "${array[@]:1}")" | sed ':a;N;$!ba;s/\n/ /g';;
+    "-fi")msg -azu "$(fun_trans "${array[@]:2}") ${array[1]}" | sed ':a;N;$!ba;s/\n/ /g';;
+    *)msg -azu "$(fun_trans "${array[@]}")" | sed ':a;N;$!ba;s/\n/ /g';;
+  esac
+done
+}
+# SISTEMA DE SELECAO
+selection_fun () {
+local selection="null"
+local range
+for((i=0; i<=$1; i++)); do range[$i]="$i "; done
+while [[ ! $(echo ${range[*]}|grep -w "$selection") ]]; do
+echo -ne "\033[1;37m$(fun_trans " â–º Selecione una Opcion"): " >&2
+read selection
+tput cuu1 >&2 && tput dl1 >&2
+done
+echo $selection
+}
+export -f msg
+export -f selection_fun
+export -f fun_trans
+export -f  menu_func
+export -f meu_ip
+export -f fun_ip
+clear
+sudo sync
+sudo sysctl -w vm.drop_caches=3 > /dev/null 2>&1
+msg -bar
+msg -tit
+#
+menu_info
+msg -bar
+# echo -e "\033[1;31m[\033[1;32m $vesaoSCT\033[1;97m"
+# msg -bar
+title=`echo -e "\033[1;96m$(cat ${SCPdir}/message.txt)"`
+printf "%*s\n" $(( ( $(echo -e "$title" | wc -c ) + 55 ) / 2 )) "$title"
+msg -bar
+monservi_fun () {
+clear
+clear
+monssh () {
+sed -i "57d" /bin/monitor.sh
+sed -i '57i EstadoServicio ssh' /bin/monitor.sh
+}
+mondropbear () {
+sed -i "59d" /bin/monitor.sh
+sed -i '59i EstadoServicio dropbear' /bin/monitor.sh
+}
+monssl() {
+sed -i "61d" /bin/monitor.sh
+sed -i '61i EstadoServicio stunnel4' /bin/monitor.sh
+}
+monsquid() {
+sed -i "63d" /bin/monitor.sh
+sed -i '63i [[ $(EstadoServicio squid) ]] && EstadoServicio squid3' /bin/monitor.sh
+}
+monapache() {
+sed -i "65d" /bin/monitor.sh
+sed -i '65i EstadoServicio apache2' /bin/monitor.sh
+}
+monv2ray() {
+sed -i "55d" /bin/monitor.sh
+sed -i '55i EstadoServicio v2ray' /bin/monitor.sh
+}
+msg -bar
+msg -tit
+echo -e "\033[1;32m          MONITOR DE SERVICIONS PRINCIPALES"
+
+PIDVRF3="$(ps aux|grep "${SCPdir}/menu monitorservi"|grep -v grep|awk '{print $2}')"
+
+PIDVRF5="$(ps aux|grep "${SCPdir}/menu moni2"|grep -v grep|awk '{print $2}')"
+
+if [[ -z $PIDVRF3 ]]; then
+sed -i '5a\screen -dmS very3 /etc/VPS-MX/menu monitorservi' /bin/resetsshdrop
+msg -bar
+echo -e "\033[1;34m          Â¿Monitorear Protocolo SSH/SSHD?"
+msg -bar
+read -p "                    [ s | n ]: " monssh  
+sed -i "57d" /bin/monitor.sh
+sed -i '57i #EstadoServicio ssh' /bin/monitor.sh 
+[[ "$monssh" = "s" || "$monssh" = "S" ]] && monssh
+msg -bar
+echo -e "\033[1;34m          Â¿Monitorear Protocolo DROPBEAR?"
+msg -bar
+read -p "                    [ s | n ]: " mondropbear  
+sed -i "59d" /bin/monitor.sh
+sed -i '59i #EstadoServicio dropbear' /bin/monitor.sh
+[[ "$mondropbear" = "s" || "$mondropbear" = "S" ]] && mondropbear
+msg -bar
+echo -e "\033[1;34m            Â¿Monitorear Protocolo SSL?"
+msg -bar
+read -p "                    [ s | n ]: " monssl  
+sed -i "61d" /bin/monitor.sh
+sed -i '61i #EstadoServicio stunnel4' /bin/monitor.sh
+[[ "$monssl" = "s" || "$monssl" = "S" ]] && monssl
+msg -bar
+echo -e "\033[1;34m            Â¿Monitorear Protocolo SQUID?"
+msg -bar
+read -p "                    [ s | n ]: " monsquid  
+sed -i "63d" /bin/monitor.sh
+sed -i '63i #[[ $(EstadoServicio squid) ]] && EstadoServicio squid3' /bin/monitor.sh
+[[ "$monsquid" = "s" || "$monsquid" = "S" ]] && monsquid
+msg -bar
+echo -e "\033[1;34m            Â¿Monitorear Protocolo APACHE?"
+msg -bar
+read -p "                    [ s | n ]: " monapache  
+sed -i "65d" /bin/monitor.sh
+sed -i '65i #EstadoServicio apache2' /bin/monitor.sh
+[[ "$monapache" = "s" || "$monapache" = "S" ]] && monapache
+msg -bar
+echo -e "\033[1;34m            Â¿Monitorear Protocolo V2RAY?"
+msg -bar
+read -p "                    [ s | n ]: " monv2ray  
+sed -i "55d" /bin/monitor.sh
+sed -i '55i #EstadoServicio v2ray' /bin/monitor.sh 
+[[ "$monv2ray" = "s" || "$monv2ray" = "S" ]] && monv2ray 
+
+#echo "screen -dmS very3 /etc/VPS-MX/menu monitorservi" >> /bin/resetsshdrop
+cd ${SCPdir}
+screen -dmS very3 ${SCPdir}/menu monitorservi
+screen -dmS monis2 ${SCPdir}/menu moni2
+else
+
+
+for pid in $(echo $PIDVRF3); do
+kill -9 $pid &>/dev/null
+sed -i "6d" /bin/resetsshdrop
+done
+
+for pid in $(echo $PIDVRF5); do
+kill -9 $pid &>/dev/null
+done
+
+fi
+msg -bar
+echo -e "             Puedes Monitorear desde:\n       \033[1;32m http://$(meu_ip):81/monitor.html"
+msg -bar
+[[ -z ${VERY3} ]] && monitorservi="\033[1;32m ACTIVADO " || monitorservi="\033[1;31m DESACTIVADO "
+echo -e "            $monitorservi  --  CON EXITO"
+msg -bar
+
+}
+monitor_auto () {
+while true; do
+monitor.sh 2>/dev/null
+sleep 60s 
+    done
+}
+if [[ "$1" = "monitorservi" ]]; then
+monitor_auto
+exit
+fi
+pid_kill () {
+[[ -z $1 ]] && refurn 1
+pids="$@"
+for pid in $(echo $pids); do
+kill -9 $pid &>/dev/null
+done
+}
+monitorport_fun () {
+while true; do
+pidproxy3=$(ps x | grep "PDirect.py" | grep -v "grep" | awk -F "pts" '{print $1}') && [[ ! -z $pidproxy3 ]] && pid_kill $pidproxy3
+pidpyssl=$(ps x | grep "python.py" | grep -v "grep" | awk -F "pts" '{print $1}') && [[ ! -z $pidpyssl ]] && pid_kill $pidpyssl
+sleep 60s 
+done
+}
+if [[ "$1" = "moni2" ]]; then
+monitorport_fun
+exit
+fi
