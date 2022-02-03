@@ -602,10 +602,209 @@ dpkg-reconfigure --frontend noninteractive tzdata > /dev/null 2>&1 && echo -e "\
 #fin
 #by @lacasitamx
 }
+systen_info () {
+clear
+clear
+msg -bar
+msg -tit
+msg -ama "$(fun_trans "                DETALLES DEL SISTEMA")"
+null="\033[1;31m"
+msg -bar
+if [ ! /proc/cpuinfo ]; then msg -verm "$(fun_trans "Sistema No Soportado")" && msg -bar; return 1; fi
+if [ ! /etc/issue.net ]; then msg -verm "$(fun_trans "Sistema No Soportado")" && msg -bar; return 1; fi
+if [ ! /proc/meminfo ]; then msg -verm "$(fun_trans "Sistema No Soportado")" && msg -bar; return 1; fi
+totalram=$(free | grep Mem | awk '{print $2}')
+usedram=$(free | grep Mem | awk '{print $3}')
+freeram=$(free | grep Mem | awk '{print $4}')
+swapram=$(cat /proc/meminfo | grep SwapTotal | awk '{print $2}')
+system=$(cat /etc/issue.net)
+clock=$(lscpu | grep "CPU MHz" | awk '{print $3}')
+based=$(cat /etc/*release | grep ID_LIKE | awk -F "=" '{print $2}')
+processor=$(cat /proc/cpuinfo | grep "model name" | uniq | awk -F ":" '{print $2}')
+cpus=$(cat /proc/cpuinfo | grep processor | wc -l)
+[[ "$system" ]] && msg -ama "$(fun_trans "Sistema"): ${null}$system" || msg -ama "$(fun_trans "Sistema"): ${null}???"
+[[ "$based" ]] && msg -ama "$(fun_trans "Base"): ${null}$based" || msg -ama "$(fun_trans "Base"): ${null}???"
+[[ "$processor" ]] && msg -ama "$(fun_trans "Procesador"): ${null}$processor x$cpus" || msg -ama "$(fun_trans "Procesador"): ${null}???"
+[[ "$clock" ]] && msg -ama "$(fun_trans "Frecuencia de Operacion"): ${null}$clock MHz" || msg -ama "$(fun_trans "Frecuencia de Operacion"): ${null}???"
+msg -ama "$(fun_trans "Uso del Procesador"): ${null}$(ps aux  | awk 'BEGIN { sum = 0 }  { sum += sprintf("%f",$3) }; END { printf " " "%.2f" "%%", sum}')"
+msg -ama "$(fun_trans "Memoria Virtual Total"): ${null}$(($totalram / 1024))"
+msg -ama "$(fun_trans "Memoria Virtual En Uso"): ${null}$(($usedram / 1024))"
+msg -ama "$(fun_trans "Memoria Virtual Libre"): ${null}$(($freeram / 1024))"
+msg -ama "$(fun_trans "Memoria Virtual Swap"): ${null}$(($swapram / 1024))MB"
+msg -ama "$(fun_trans "Tempo Online"): ${null}$(uptime)"
+msg -ama "$(fun_trans "Nombre De La Maquina"): ${null}$(hostname)"
+msg -ama "$(fun_trans "IP De La  Maquina"): ${null}$(ip addr | grep inet | grep -v inet6 | grep -v "host lo" | awk '{print $2}' | awk -F "/" '{print $1}')"
+msg -ama "$(fun_trans "Version de Kernel"): ${null}$(uname -r)"
+msg -ama "$(fun_trans "Arquitectura"): ${null}$(uname -m)"
+msg -bar
+return 0
+}
+menu3(){
+declare -A inst
+pidr_inst
+clear
+valuest=$(ps ax |grep /etc/shadowsocks-r|grep -v grep)
+[[ $valuest != "" ]] && valuest="\033[1;32m[ON] " || valuest="\033[1;31m[OFF]"
+pidproxy=$(ps x | grep -w  "lacasitamx.py" | grep -v "grep" | awk -F "pts" '{print $1}') && [[ ! -z $pidproxy ]] && plox="\e[1;32m[ON] " || plox="\e[1;31m[OFF]"
+Bot=$(ps x|grep -v grep |grep "ADMbot.sh")
+[[ ! $Bot ]] && AD="\033[1;31m[OFF]" || AD="\033[1;32m[ON] "
+msg -bar
+msg -tit
+export -f fun_eth
+export -f fun_bar
 
+#msg -bar2
+	unset puertos
+	declare -A port
+	local portasVAR=$(lsof -V -i tcp -P -n | grep -v "ESTABLISHED" |grep -v "COMMAND" | grep "LISTEN")
+	#local portasVAR=$(lsof -V -i -P -n | grep -v "ESTABLISHED" |grep -v "COMMAND" | grep "LISTEN" | grep -v 'IPv6')
+	local NOREPEAT
+	local reQ
+	local Port
+	while read port; do
+		reQ=$(echo ${port}|awk '{print $1}')
+		Port=$(echo ${port} | awk '{print $9}' | awk -F ":" '{print $2}')
+		[[ $(echo -e $NOREPEAT|grep -w "$Port") ]] && continue
+		NOREPEAT+="$Port\n"
+		case ${reQ} in
+			squid|squid3)
+			[[ -z ${port[SQD]} ]] && local port[SQD]="\033[1;31m SQUID: \033[1;32m"
+			port[SQD]+="$Port ";;
+			apache|apache2)
+			[[ -z ${port[APC]} ]] && local port[APC]="\033[1;31m APACHE: \033[1;32m"
+			port[APC]+="$Port ";;
+			nginx)
+			[[ -z ${port[NG]} ]] && local port[NG]="\033[1;31m NGINX: \033[1;32m"
+			port[NG]+="$Port ";;
+			ssh|sshd)
+			[[ -z ${port[SSH]} ]] && local port[SSH]="\033[1;31m SSH: \033[1;32m"
+			port[SSH]+="$Port ";;
+			dropbear)
+			[[ -z ${port[DPB]} ]] && local port[DPB]="\033[1;31m DROPBEAR: \033[1;32m"
+			port[DPB]+="$Port ";;
+			ssserver|ss-server)
+			[[ -z ${port[SSV]} ]] && local port[SSV]="\033[1;31m SHADOWSOCKS: \033[1;32m"
+			port[SSV]+="$Port ";;
+			openvpn)
+			[[ -z ${port[OVPN]} ]] && local port[OVPN]="\033[1;31m OPENVPN-TCP: \033[1;32m"
+			port[OVPN]+="$Port ";;
+			stunnel4|stunnel)
+			[[ -z ${port[SSL]} ]] && local port[SSL]="\033[1;31m SSL: \033[1;32m"
+			port[SSL]+="$Port ";;
+			python|python3)
+			[[ -z ${port[PY3]} ]] && local port[PY3]="\033[1;31m PYTHON: \033[1;32m"
+			port[PY3]+="$Port ";;
+			node)
+			[[ -z ${port[WS]} ]] && local port[WS]="\033[1;31m WEBSOCKET: \033[1;32m"
+			port[WS]+="$Port ";;
+			v2ray)
+			[[ -z ${port[V2R]} ]] && local port[V2R]="\033[1;31m V2RAY: \033[1;32m"
+			port[V2R]+="$Port ";;
+			badvpn-ud)
+			[[ -z ${port[BAD]} ]] && local port[BAD]="\033[1;31m BADVPN: \033[1;32m"
+			port[BAD]+="$Port ";;
+		esac
+	done <<< "${portasVAR}"
 
+	#UDP
+	local portasVAR=$(lsof -V -i udp -P -n | grep -v "ESTABLISHED" |grep -v "COMMAND")
+	local NOREPEAT
+	local reQ
+	local Port
+	while read port; do
+		reQ=$(echo ${port}|awk '{print $1}')
+		Port=$(echo ${port} | awk '{print $9}' | awk -F ":" '{print $2}')
+		[[ $(echo -e $NOREPEAT|grep -w "$Port") ]] && continue
+		NOREPEAT+="$Port\n"
+		case ${reQ} in
+			openvpn)
+			[[ -z ${port[OVPN]} ]] && local port[OVPN]="\033[1;31m OPENVPN-UDP: \033[1;32m"
+			port[OVPN]+="$Port ";;
+			dns-serve)
+			[[ -z ${port[SLOW]} ]] && local port[SLOW]="\033[1;31m SlowDNS: \033[1;32m"
+			port[SLOW]+="$Port ";;
+			
+		esac
+	done <<< "${portasVAR}"
 
+	k=1
 
+	for line in "${port[@]}"; do
+		[[ -z "$line" ]] && continue
+		let RESTO=k%2
+
+		if [[ $RESTO -eq 0 ]]; then
+			puertos+="$line\n"
+		else
+			puertos+="$line-"
+		fi
+		let k++
+
+	done
+
+	echo -e "$puertos"|column -t -s '-'
+	msg -bar
+echo -e "	\e[97m\e[1;100mPROTOCOLOS\e[0m		  \e[97m\e[41mHERRAMIENTAS\e[0m"
+msg -bar
+#menu de protocolos
+echo -e "$(msg -verd "[1]")$(msg -verm2 "=>") $(msg -azu "BADVPN -------${inst[badvpn]}")  $(msg -azuc "[14]")$(msg -verm2 "=>")$(msg -azu "ARCHIVO ONLINE")"
+echo -e "$(msg -verd "[2]")$(msg -verm2 "=>") $(msg -azu "HTTP-PYTHON --$plox")  $(msg -azuc "[15]")$(msg -verm2 "=>")$(msg -azu "FIREWALL")"
+echo -e "$(msg -verd "[3]")$(msg -verm2 "=>") $(msg -azu "SOCKS PYTHON -${inst[python]}")  $(msg -azuc "[16]")$(msg -verm2 "=>")$(msg -azu "FAIL2BAN PROTECION")"
+echo -e "$(msg -verd "[4]")$(msg -verm2 "=>") $(msg -azu "V2RAY --------${inst[v2ray]}")  $(msg -azuc "[17]")$(msg -verm2 "=>")$(msg -azu "AUTENTIFICAR SQUID")"
+echo -e "$(msg -verd "[5]")$(msg -verm2 "=>") $(msg -azu "SSL ----------${inst[stunnel4]}")  $(msg -azuc "[18]")$(msg -verm2 "=>")$(msg -azu "TCP (BBR|BBR-Plus)")"
+echo -e "$(msg -verd "[6]")$(msg -verm2 "=>") $(msg -azu "DROPBEAR -----${inst[dropbear]}")  $(msg -azuc "[19]")$(msg -verm2 "=>")$(msg -azu "DNS NETFLIX")"
+echo -e "$(msg -verd "[7]")$(msg -verm2 "=>") $(msg -azu "SQUID --------${inst[squid]}")  $(msg -azuc "[20]")$(msg -verm2 "=>")$(msg -azu "PUERTOS ACTIVOS")"
+echo -e "$(msg -verd "[8]")$(msg -verm2 "=>") $(msg -azu "OPENVPN ------${inst[openvpn]}")  $(msg -azuc "[21]")$(msg -verm2 "=>")$(msg -azu "Pass Root/Add root")"
+echo -e "$(msg -verd "[9]")$(msg -verm2 "=>") $(msg -azu "SLOWDNS ------${inst[dns-serve]}")  $(msg -azuc "[22]")$(msg -verm2 "=>")$(msg -azu "Limpiar/Cache/Ram")"
+echo -e "$(msg -verd "[10]")$(msg -verm2 "=>")$(msg -azu "SHADOWSOCKS-N ${inst[ssserver]}")  $(msg -azuc "[23]")$(msg -verm2 "=>")$(msg -azu "DETALLES DE SISTEMA")"
+echo -e "$(msg -verd "[11]")$(msg -verm2 "=>")$(msg -azu "SHADOWSOCKS-L ${inst[ss-server]}")  $(msg -azuc "[24]")$(msg -verm2 "=>")$(msg -azu "PAYLOAD FUERZA BRUTA")"
+echo -e "$(msg -verd "[12]")$(msg -verm2 "=>")$(msg -azu "SHADOWSOCKS-R ${valuest}")  $(msg -azuc "[25]")$(msg -verm2 "=>")$(msg -azu "SCANNER SUBDOMINIO")"
+echo -e "$(msg -verd "[13]")$(msg -verm2 "=>")$(msg -azu "BOT TELEGRAM -$AD")  $(msg -azuc "[26]")$(msg -verm2 "=>")$(msg -azu "PRUEBA DE VELOCIDAD")"
+echo -e "$(msg -verd "[0]")$(msg -verm2 "=>") $(msg -azu "<<- VOLVER")           $(msg -azuc "[27]")$(msg -verm2 "=>")$(msg -azu "CAMBIAR HORA LOCAL")"
+
+msg -bar
+echo -ne " â–º\e[1;37m Selecione Una Opcion: \e[33m " && read select
+case $select in
+0) ;;
+1) ${SCPinst}/budp.sh && msg -ne "Enter Para Continuar" && read enter
+menu3 ;;
+2) ${SCPinst}/proxy.sh && msg -ne "Enter Para Continuar" && read enter
+menu3 ;;
+3) ${SCPinst}/sockspy.sh && msg -ne "Enter Para Continuar" && read enter
+menu3 ;;
+4) ${SCPinst}/v2ray.sh && msg -ne "Enter Para Continuar" && read enter
+menu3 ;;
+5) ${SCPinst}/ssl.sh && msg -ne "Enter Para Continuar" && read enter
+menu3 ;;
+6) ${SCPinst}/dropbear.sh && msg -ne "Enter Para Continuar" && read enter
+menu3 ;;
+7) ${SCPinst}/squid.sh && msg -ne "Enter Para Continuar" && read enter
+menu3 ;;
+8) ${SCPinst}/openvpn.sh && msg -ne "Enter Para Continuar" && read enter
+menu3 ;;
+9) ${SCPinst}/slowdns.sh && msg -ne "Enter Para Continuar" && read enter
+menu3 ;;
+10) ${SCPinst}/shadowsocks.sh;;
+11) ${SCPinst}/Shadowsocks-libev.sh;;
+12) ${SCPinst}/Shadowsocks-R.sh;;
+#
+#herramientas
+13) ${SCPfrm}/ADMbot.sh;;
+14) ${SCPfrm}/apacheon.sh;;
+15) ${SCPfrm}/blockBT.sh;;
+16) ${SCPfrm}/fai2ban.sh;;
+17) ${SCPfrm}/squidpass.sh;;
+18) ${SCPfrm}/tcp.sh;;
+19) ${SCPfrm}/dns-netflix.sh;;
+20) ${SCPfrm}/ports.sh && msg -ne "Enter Para Continuar" && read enter
+menu3 ;;
+21) ${SCPfrm}/gestor.sh;;
+22) ${SCPfrm}/utils.sh;;
+23) systen_info;;
+24) ${SCPfrm}/paysnd.sh;;
+25) ${SCPfrm}/ultrahost;;
+26) ${SCPfrm}/speed.py;;
+27) horas ;;
 *) msg -verm2 " Por Favor Selecione El NÃºmero Correcto"
 sleep 3.s
 menu3 ;;
