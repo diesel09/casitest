@@ -473,10 +473,10 @@ msg -bar2 && msg -verm "  Code Invalido -- #¡Key Invalida#! " && msg -bar2
 rm -rf lista-arq
 exit 1
 }
-while [[ ! $Key ]]; do
-msg -bar2 && msg -ne "\033[1;93m          >>> INTRODUSCA LA KEY ABAJO <<<\n   \033[1;37m" && read Key
-tput cuu1 && tput dl1
-done
+#while [[ ! $Key ]]; do
+#msg -bar2 && msg -ne "\033[1;93m          >>> INTRODUSCA LA KEY ABAJO <<<\n   \033[1;37m" && read Key
+#tput cuu1 && tput dl1
+#done
 #msg -ne "    # Verificando Key # : "
 #cd $HOME
 Key="qraKatsil/33?030ce55?7dff/8888:%05+@%?+08?+91%@"
