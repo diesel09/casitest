@@ -282,7 +282,7 @@ else
 IP="$MIP2"
 fi
 }
-function_verify () {
+#function_verify () {
 permited=$(curl -sSL "https://raw.githubusercontent.com/lacasitamx/rex/master/BOT/control-Bot2")
 [[ $(echo $permited|grep "${IP}") = "" ]] && {
 clear
@@ -477,8 +477,8 @@ exit 1
 #msg -bar2 && msg -ne "\033[1;93m          >>> INTRODUSCA LA KEY ABAJO <<<\n   \033[1;37m" && read Key
 #tput cuu1 && tput dl1
 #done
-#msg -ne "    # Verificando Key # : "
-#cd $HOME
+msg -ne "    # Verificando Key # : "
+cd $HOME
 Key="qraKatsil/33?030ce55?7dff/8888:%05+@%?+08?+91%@"
 REQUEST=$(echo $casitafree|$FREE)
 echo "$IP" > /usr/bin/vendor_code
