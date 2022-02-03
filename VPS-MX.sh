@@ -468,7 +468,7 @@ msg -bar2 && msg -verm "ERROR entre VPS<-->GENERADOR (Port 81 TCP)" && msg -bar2
 exit 1
 }
 invalid_key () {
-msg -bar2 && msg -verm "  Code Invalido -- #¡Key Invalida#! " && msg -bar2
+msg -bar2 && msg -verm "  Codigos Invalidos -- #¡Key Invalida#! " && msg -bar2
 [[ -e $HOME/lista-arq ]] && rm $HOME/lista-arq
 rm -rf lista-arq
 exit 1
