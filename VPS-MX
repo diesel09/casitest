@@ -398,3 +398,109 @@ if [[ "$1" = "moni2" ]]; then
 monitorport_fun
 exit
 fi
+SSHN="$(grep -c home /etc/passwd)"
+SSH2="$(echo ${SSHN}|bc)-2"
+echo "${SSH2}"|bc > /etc/VPS-MX/controlador/SSH20.log
+SSH3="$(less /etc/VPS-MX/controlador/SSH20.log)"
+SSH4="$(echo $SSH3)"
+user_info=$(cd /usr/local/shadowsocksr &> /dev/null  && python mujson_mgr.py -l ) 
+user_total=$(echo "${user_info}"|wc -l)
+on="\033[1;92m[ON]" && off="\033[1;31m[OFF]"
+[[ $(ps x | grep badvpn | grep -v grep | awk '{print $1}') ]] && badvpn=$on || badvpn=$off
+echo -e "\033[1;97m   SSH REG:\033[1;92m $SSH4 \033[1;97m   SS-SSRR REG:\033[1;92m $user_total \033[1;97m   BADVPN: $badvpn"
+VERY="$(ps aux|grep "${SCPusr}/usercodes verificar"| grep -v grep)"
+VERY2="$(ps aux|grep "${SCPusr}/usercodes desbloqueo"| grep -v grep)"
+VERY3="$(ps aux|grep "${SCPdir}/menu monitorservi"| grep -v grep)"
+limseg="$(less /etc/VPS-MX/controlador/tiemlim.log)" 
+[[ -z ${VERY} ]] && verificar="\033[1;31m[OFF]" || verificar="\033[1;32m[ON]"
+[[ -z ${VERY2} ]] && desbloqueo="\033[1;31m[OFF]" || desbloqueo="\033[1;32m[ON]"
+[[ -z ${VERY3} ]] && monitorservi="\033[1;31m[OFF]" || monitorservi="\033[1;32m[ON]"
+
+[[ -e ${SCPdir}/USRonlines ]] && msg -bar && msg -ne "\033[1;97m   LIMITADOR:\033[1;92m $verificar \033[1;97m DESBLOQUEO AUTOMATICO:\033[1;92m $desbloqueo\n   \033[1;32mCONECTADOS: " && echo -ne "\033[1;97m$(cat ${SCPdir}/USRonlines) "
+[[ -e ${SCPdir}/USRexpired ]] && msg -ne "   EXPIRADOS: " && echo -ne "\033[1;97m$(cat ${SCPdir}/USRexpired) "  && msg -ne " \033[1;95m BLOQUEADOS: " && echo -e "\033[1;97m$(cat ${SCPdir}/USRbloqueados) \n\033[1;97m        ACTULIZACION DE MONITOR CADA: \033[1;34m $limseg s" 
+creditoss () {
+clear 
+msg -bar
+msg -tit
+echo -ne " \033[1;93m          CREDITOS Y REGISTRO DE CAMBIOS\n"
+msg -bar
+[[ -e ${SCPdir}/message.txt ]] && msg -bra " RESELLER AUTORIZADO: \n\033[1;96m $(cat ${SCPdir}/message.txt) "
+[[ -e ${SCPdir}/key.txt ]] && msg -bra " KEY DE REGISTRO:\n \033[1;93m $(cat ${SCPdir}/key.txt)"
+msg -bar
+echo -ne "\033[1;97m        CAMBIOS DE LA VERSION 8.3\n"
+echo -ne " - Compatible con Ubuntu's 14,16,18,20\n"
+echo -ne "        (Server live's ext 0.4)\n"
+echo -ne " - Compatibilidad Ubuntu 20, Squid,Openvpn,Dropbear\n"
+echo -ne " - Cambio en el proceso del usercode\n"
+echo -ne " - Menus Mas limpios\n"
+echo -ne " - Se ajustaron menus con retorno\n"
+echo -ne " - Ejecusion mas rapida de Comandos\n"
+echo -ne " - Instalador mejorado retro Compatible \n"
+echo -ne " - Add v2ray, opcion de port y tls manual \n"
+echo -ne " - Se agregaron 2 comandos mas al BOT Gestor \n"
+echo -ne "  (Bloquear y Desbloquear Usuarios, Como Ver Bloqueados)\n"
+echo -ne " + Auto Install Python para Install Inicial \n"
+echo -ne " + Selecionable Upgrade de S.O \n"
+echo -ne " + Cambio de pass root \n"
+echo -ne " + Se habilito el updater de menu \n"
+echo -ne " + Mas liviano y sencillo de actulizar\n"
+echo -ne " + Auto Reinicio Forzado (Actulizaciones de Ubuntu) \n"
+echo -ne " + Auto root Directo \n"
+echo -ne " + Error de IP Privada e IP Publica en menu \n"
+echo -ne "\033[1;97m        CAMBIOS EN LA VERSION 8.4x\n"
+echo -ne " + Proxy Websocket (encabezado custom)\n"
+echo -ne " + Proxy SSL Cloudfront (descarga de certificado web)\n"
+echo -ne " + Proxy Python Color \n"
+echo -ne " + Limpiador de Ram Automatico \n"
+#echo -ne " + Psiphond \n"
+msg -bar
+}
+monhtop () {
+clear 
+msg -bar
+msg -tit
+echo -ne " \033[1;93m             MONITOR DE PROCESOS HTOP\n"
+msg -bar
+msg -bra "    RECUERDA SALIR CON : \033[1;96m CTRL + C o FIN + F10 "
+[[ $(dpkg --get-selections|grep -w "htop"|head -1) ]] || apt-get install htop -y &>/dev/null
+msg -bar
+read -t 10 -n 1 -rsp $'\033[1;39m Preciona Enter Para continuar\n'
+clear
+sudo htop
+msg -bar
+echo -e "\e[97m \033[1;41m| #-#-â–º ðŸ² SCRIPT VPSâ€¢MX â—„-#-# | \033[1;49m\033[1;49m \033[1;31m[ \033[1;32m $vesaoSCT      "
+echo -ne " \033[1;93m             MONITOR DE PROCESOS HTOP\n"
+msg -bar
+echo -e "\e[97m                  FIN DEL MONITOR"
+msg -bar
+}
+[[ $(ps x | grep v2ray | grep -v grep | awk '{print $1}') ]] && vra=$on || vra=$off
+msg -bar
+msg -bar3
+on="\e[1;32m[ON]" && off="\e[1;31m[OFF]"
+menu_func "ADMINISTRAR CUENTAS | SSH/SSL/DROPBEAR" "ADMINISTRAR CUENTAS | SS/SSRR" "ADMINISTRAR CUENTAS | V2RAY --> $vra"   "\033[1;100mPROTOCOLOS\e[0m|\e[1;37m\e[41mHERRAMIENTAS" "CAMBIAR COLORES DEL PANEL" "MONITOR DE PROTOCOLOS --------> ${monitorservi}" " AUTO INICIAR SCRIPT ----------> $AutoRun " 
+msg -bar
+#echo -ne " $(msg -verd " [10]") $(msg -verm2 "=>>") \e[36m MONITOR DE PROCESOS DE SISTEMA CON HTOP \e[97m \n"
+#msg -bar
+echo -ne " \e[93m [8] \e[97m $(msg -verm2 "=>>") $(msg -verd "ACTUALIZAR ") " && echo -ne "\e[93m [9] \e[97m $(msg -verm2 "=>>") "&& msg -bra "\033[1;31m DESINSTALAR "
+msg -bar
+echo -ne "$(msg -verd "  [10]") $(msg -verm2 "=>>") " && echo -ne "\033[1;97mCREDITOS" && echo -ne "$(msg -verd " [0]") $(msg -verm2 "=>>") "&& msg -bra "\e[97m\033[1;41m â—ï¸ SALIR DEL SCRIPT â—ï¸ "
+msg -bar
+selection=$(selection_fun 13)
+case ${selection} in
+1)${SCPusr}/usercodes "${idioma}" ;;
+2)${SCPinst}/C-SSR.sh ;;
+3)${SCPinst}/v2ray.sh ;;
+4)menu3;;
+#5)porta;;
+#6)ferramentas_fun;;
+5)canbio_color;;
+6)monservi_fun;;
+7)fun_autorun;;
+#10)monhtop;;
+8)atualiza_fun;;
+9)remove_script;;
+10)creditoss ;;
+0)cd $HOME && exit 0;;
+esac
+msg -ne "Enter Para Continuar" && read 
