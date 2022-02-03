@@ -283,7 +283,7 @@ IP="$MIP2"
 fi
 }
 function_verify () {
-permited=$(curl -sSL "https://raw.githubusercontent.com/lacasitamx/rex/master/BOT/control-Bot")
+permited=$(curl -sSL "https://raw.githubusercontent.com/lacasitamx/rex/master/BOT/control-Bot2")
 [[ $(echo $permited|grep "${IP}") = "" ]] && {
 clear
 echo -e "\n\n\n\033[1;91m————————————————————————————————————————————————————\n      ¡ESTA KEY NO CONCUERDA CON EL INSTALADOR! \n                 CONATACTE A @Kalix1\n————————————————————————————————————————————————————\n\n\n"
