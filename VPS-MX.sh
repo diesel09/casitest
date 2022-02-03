@@ -272,6 +272,7 @@ fun_ipe () {
 MIP=$(ip addr | grep 'inet' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -o -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | head -1)
 MIP2=$(wget -qO- ifconfig.me)
 [[ "$MIP" != "$MIP2" ]] && IP="$MIP2" || IP="$MIP"
+echo "$IP" > /usr/bin/vendor_code
 }
 fun_ip () {
 MIP2=$(wget -qO- ifconfig.me)
@@ -280,6 +281,7 @@ if [ $? -eq 0 ]; then
 IP="$MIP"
 else
 IP="$MIP2"
+echo "$IP" > /usr/bin/vendor_code
 fi
 }
 function_verify () {
@@ -489,7 +491,7 @@ wget -O $HOME/lista-arq ${REQUEST}/lista-arq > /dev/null 2>&1 && echo -e "\033[1
    invalid_key
    exit
    }
-wget -O $HOME/lista-arq $(ofus "$Key")/$IP > /dev/null 2>&1 && echo -e "\033[1;32m Code Correcto de KEY" || {
+#wget -O $HOME/lista-arq $(ofus "$Key")/$IP > /dev/null 2>&1 && echo -e "\033[1;32m Code Correcto de KEY" || {
 #echo -e "\033[1;91m Code Incorrecto de KEY"
 #invalid_key
 #exit
@@ -504,12 +506,13 @@ REQUEST=$( "$Key"|cut -d'/' -f2)
 [[ ! -d ${SCPinstal} ]] && mkdir ${SCPinstal}
 pontos="."
 stopping="Configurando Directorios"
-#for arqx in $(cat $HOME/lista-arq); do
-#msg -verm "${stopping}${pontos}"
+for arqx in $(cat $HOME/lista-arq); do
+msg -verm "${stopping}${pontos}"
+wget --no-check-certificate -O ${SCPinstal}/${arqx} ${REQUEST}/${arqx} > /dev/null 2>&1 && verificar_arq "${arqx}" || error_fun
 #wget --no-check-certificate -O ${SCPinstal}/${arqx} ${IP}:81/${REQUEST}/${arqx} > /dev/null 2>&1 && verificar_arq "${arqx}" || error_fun
-#tput cuu1 && tput dl1
+tput cuu1 && tput dl1
 pontos+="."
-#done
+done
 sleep 1s
 msg -bar2
 listaarqs="$(locate "lista-arq"|head -1)" && [[ -e ${listaarqs} ]] && rm $listaarqs
