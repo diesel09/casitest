@@ -293,7 +293,6 @@ exit 1
 v1=$(curl -sSL "https://raw.githubusercontent.com/lacasitamx/VPSMX/master/SCRIPT-8.4/Vercion")
 echo "$v1" > /etc/versin_script
 }
-}
 v1=$(curl -sSL "https://raw.githubusercontent.com/lacasitamx/VPSMX/master/SCRIPT-8.4/Vercion")
 echo "$v1" > /etc/versin_script
 funcao_idioma () {
