@@ -502,7 +502,7 @@ updatedb
 if [[ -e $HOME/lista-arq ]] && [[ ! $(cat $HOME/lista-arq|grep "Code de KEY Invalido!") ]]; then
 msg -bar2
 msg -verd "    $(source trans -b es:${id} "Ficheros Copiados"|sed -e 's/[^a-z -]//ig'): \e[97m[\e[93mVPS-MX #MOD by Kalix1\e[97m]"
-REQUEST=$( "$Key"|cut -d'/' -f2)
+#REQUEST=$( "$Key"|cut -d'/' -f2)
 [[ ! -d ${SCPinstal} ]] && mkdir ${SCPinstal}
 pontos="."
 stopping="Configurando Directorios"
