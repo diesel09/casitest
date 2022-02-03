@@ -504,3 +504,4 @@ case ${selection} in
 0)cd $HOME && exit 0;;
 esac
 msg -ne "Enter Para Continuar" && read 
+${SCPdir}/menu
