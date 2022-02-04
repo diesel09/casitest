@@ -10,8 +10,8 @@ exit 0
 sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1 > /dev/null 2>&1
 sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1 > /dev/null 2>&1
 sudo sysctl -w net.ipv6.conf.lo.disable_ipv6=1 > /dev/null 2>&1
-lacasita="/etc/rmz" && [[ ! -d ${lacasita} ]] && exit
-lacasita >/dev/null 2>&1
+#lacasita="/etc/rmz" && [[ ! -d ${lacasita} ]] && exit
+#lacasita >/dev/null 2>&1
 _hora=$(printf '%(%D-%H:%M:%S)T') 
 #COLORES 
 red=$(tput setaf 1)
@@ -219,7 +219,8 @@ if [[ -e $HOME/lista-arq ]] && [[ ! $(cat $HOME/lista-arq|grep "Code de KEY Inva
    stopping="Configurando Directorios"
    for arqx in $(cat $HOME/lista-arq); do
    msg -verm "${stopping}${pontos}" 
-   wget --no-check-certificate -O ${SCPinstal}/${arqx} ${IP}:81/${REQUEST}/${arqx} > /dev/null 2>&1 && verificar_arq "${arqx}" || error_fun
+wget --no-check-certificate -O ${SCPinstal}/${arqx} ${REQUEST}/${arqx} > /dev/null 2>&1 && verificar_arq "${arqx}" || error_fun
+   #wget --no-check-certificate -O ${SCPinstal}/${arqx} ${IP}:81/${REQUEST}/${arqx} > /dev/null 2>&1 && verificar_arq "${arqx}" || error_fun
    tput cuu1 && tput dl1
    pontos+="."
    done
