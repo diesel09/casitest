@@ -185,7 +185,7 @@ msg -bar2 && msg -verm "  Code Invalido -- #Â¡Key Invalida#! " && msg -bar2
 [[ -e $HOME/lista-arq ]] && rm -r $HOME/lista-arq
 exit 1
 }
-while [[ ! $Key ]]; do
+#while [[ ! $Key ]]; do
 clear
 clear
 msg -bar
