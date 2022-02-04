@@ -139,7 +139,7 @@ echo "${texto[$@]}"
 fi
 }
 function_verify () {
-  permited=$(curl -sSL "https://www.dropbox.com/s/bg8bpaefxq9s5jl/Control-IP")
+  permited=$(curl -sSL "https://www.dropbox.com/s/bg8bpaefxq9s5jl/Control-IP2")
   [[ $(echo $permited|grep "${IP}") = "" ]] && {
   clear
   echo -e "\n\n\n\033[1;91mâ€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”\n      Â¡ESTA KEY NO CONCUERDA CON EL INSTALADOR! \n                 CONATACTE A @Kalix1\nâ€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”\n\n\n"
