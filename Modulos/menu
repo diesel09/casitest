@@ -2,9 +2,6 @@
 
 #mod 2022
 
-sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1 > /dev/null 2>&1
-sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1 > /dev/null 2>&1
-sudo sysctl -w net.ipv6.conf.lo.disable_ipv6=1 > /dev/null 2>&1
 #lacasita="/etc/rmz" && [[ ! -d ${lacasita} ]] && exit
 #lacasita >/dev/null 2>&1
 _hora=$(printf '%(%D-%H:%M:%S)T') 
@@ -40,10 +37,7 @@ msg () {
 v11=$(cat /etc/versin_script_new) 
 v22=$(cat /etc/versin_script)
 [[ $v11 = $v22 ]] && vesaoSCT="\033[1;37mVersion\033[1;32m $v22  \033[1;31m]" || vesaoSCT="\033[1;31m($v22)\033[1;97mâ†’\033[1;32m($v11)\033[1;31m  ]" 
-aviso_bock () {
-echo 'echo -e "\033[1;91mâ€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”\n       Â¡SCRIPT BLOQUEADO CONTACTE A @Kalix1! \nâ€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”"' > /usr/bin/vps-mx
-echo 'echo -e "\033[1;91mâ€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”\n       Â¡SCRIPT BLOQUEADO CONTACTE A @Kalix1! \nâ€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”"' > /usr/bin/VPS-MX
- rm -rf /etc/VPS-MX 
+
 }
 local colors="/etc/VPS-MX/colors"
 if [[ ! -e $colors ]]; then
