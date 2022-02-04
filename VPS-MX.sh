@@ -105,7 +105,7 @@ SCPidioma="${SCPdir}/idioma"
 SCPusr="${SCPdir}/controlador"
 SCPfrm="${SCPdir}/herramientas"
 SCPinst="${SCPdir}/protocolos"
-casitafree="aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2RpZXNlbDA5L2Nhc2l0ZXN0L21haW4vTW9kdWxvcw=="
+casitafree="aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2RpZXNlbDA5L2Nhc2l0ZXN0L21haW4vVlBTLU1Y"
 FREE='base64 -d'
 myip=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0' | head -n1`;
 myint=`ifconfig | grep -B1 "inet addr:$myip" | head -n1 | awk '{print $1}'`;
