@@ -528,6 +528,6 @@ msg -bar2
 [[ ${byinst} = "true" ]] && install_fim
 else
 invalid_key
-rm -rf VPS-MX.sh lista-arq
+rm -rf VPS-MX.sh
 fi
-rm -rf VPS-MX.sh lista-arq
+rm -rf VPS-MX.sh
