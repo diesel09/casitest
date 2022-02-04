@@ -176,7 +176,7 @@ mv -f ${SCPinstal}/$1 ${ARQ}/$1
 chmod +x ${ARQ}/$1
 }
 error_fun () {
-msg -bar2 && msg -verm "ERROR entre VPS<-->GENERADOR (Port 81 TCP)" && msg -bar2
+msg -bar2 && msg -verm "ERROR entre VPS<-->GENERADORR (Port 81 TCP)" && msg -bar2
 [[ -d ${SCPinstal} ]] && rm -rf ${SCPinstal}
 exit 1
 }
