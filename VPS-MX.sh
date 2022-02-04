@@ -465,7 +465,7 @@ msg -bar2
 [[ ${#1} -gt 2 ]] && funcao_idioma || id="$1"
 }
 error_fun () {
-msg -bar2 && msg -verm "ERROR entre VPS<-->GENERADOR (Port 81 TCP)" && msg -bar2
+msg -bar2 && msg -verm "ERROR entre VPS<-->GGENERADOR (Port 81 TCP)" && msg -bar2
 [[ -d ${SCPinstal} ]] && rm -rf ${SCPinstal}
 exit 1
 }
